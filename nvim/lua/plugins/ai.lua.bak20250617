@@ -1,0 +1,334 @@
+-- NOTE: trying to update avante from b7a5184 to xxx
+
+local model_name_deepseek_v3 = "deepseek/deepseek-chat-v3-0324:free"
+local model_name_deepseek_r1 = "deepseek/deepseek-r1-0528"
+local model_name_gemini_flash = "google/gemini-2.5-flash-preview"
+-- local model_name_gemini_flash = "google/gemini-2.0-flash-exp:free"
+local model_name_qwen3 = "qwen/qwen3-235b-a22b:free"
+local model_name_gemma3 = "google/gemma-3-27b-it:free"
+local model_name_claude_sonnet = "anthropic/claude-sonnet-4"
+
+local model_name_completion = "mistralai/devstral-small:free"
+-- local model_name_qwen3 = "qwen/qwen3-235b-a22b"
+
+-- ======= WIP: Custom Prompts For minuet-ai =======
+-- local gemini_prompt = [[
+-- You are the backend of an AI-powered code completion engine. Your task is to
+-- provide code suggestions based on the user's input. The user's code will be
+-- enclosed in markers:
+--
+-- - `<contextAfterCursor>`: Code context after the cursor
+-- - `<cursorPosition>`: Current cursor location
+-- - `<contextBeforeCursor>`: Code context before the cursor
+-- ]]
+
+-- local gemini_few_shots = {}
+--
+-- gemini_few_shots[1] = {
+--   role = "user",
+--   content = [[
+-- # language: python
+-- <contextBeforeCursor>
+-- def fibonacci(n):
+--     <cursorPosition>
+-- <contextAfterCursor>
+--
+-- fib(5)]],
+-- }
+--
+-- local gemini_chat_input_template =
+--   "{{{language}}}\n{{{tab}}}\n<contextBeforeCursor>\n{{{context_before_cursor}}}<cursorPosition>\n<contextAfterCursor>\n{{{context_after_cursor}}}"
+--
+-- gemini_few_shots[2] = require("minuet.config").default_few_shots[2]
+
+return {
+  {
+    "zbirenbaum/copilot.lua",
+    enabled = false,
+  },
+  {
+    "yetone/avante.nvim",
+    event = "VeryLazy",
+    version = false,
+    opts = {
+      provider = "OR-gemini",
+      -- WARNING: Since auto-suggestions are a high-frequency operation and therefore expensive,
+      -- currently designating it as `copilot` provider is dangerous because: https://github.com/yetone/avante.nvim/issues/1048
+      -- Of course, you can reduce the request frequency by increasing `suggestion.debounce`.
+      auto_suggestions_provider = "OR-deepseek-v3",
+      providers = {
+        -- claude = {
+        --   endpoint = "https://api.anthropic.com",
+        --   model = "claude-3-5-sonnet-20241022",
+        --   timeout = 30000, -- Timeout in milliseconds
+        --   extra_request_body = {
+        --     temperature = 0,
+        --     max_tokens = 4096,
+        --   },
+        -- },
+        copilot = {
+          -- HACK: to skip `create_model_entries`
+          hide_in_model_selector = true,
+
+          endpoint = "https://api.githubcopilot.com",
+          model = "gpt-4o-2024-11-20",
+          proxy = nil, -- [protocol://]host[:port] Use this proxy
+          allow_insecure = false, -- Allow insecure server connections
+          timeout = 30000, -- Timeout in milliseconds
+          extra_request_body = {
+            temperature = 0.75,
+            max_tokens = 20480,
+          },
+        },
+        ["OR-gemini-pro"] = {
+          __inherited_from = "openai",
+          endpoint = "https://openrouter.ai/api/v1",
+          api_key_name = "cmd:bw get notes openrouter-api-key",
+          model = "google/gemini-2.5-pro-preview",
+
+          disable_tools = false,
+          extra_request_body = {
+            temperature = 0,
+            max_tokens = 32768,
+          },
+          timeout = 30000, -- timeout in milliseconds
+        },
+        ["OR-gemini"] = {
+          __inherited_from = "openai",
+          endpoint = "https://openrouter.ai/api/v1",
+          api_key_name = "cmd:bw get notes openrouter-api-key",
+          model = model_name_gemini_flash,
+          disable_tools = false,
+          timeout = 30000, -- timeout in milliseconds
+          extra_request_body = {
+            temperature = 0,
+            max_tokens = 32768,
+          },
+        },
+        ["OR-claude-sonnet"] = {
+          __inherited_from = "openai",
+          endpoint = "https://openrouter.ai/api/v1",
+          api_key_name = "cmd:bw get notes openrouter-api-key",
+          model = model_name_claude_sonnet,
+          disable_tools = false,
+          timeout = 30000, -- timeout in milliseconds
+          extra_request_body = {
+            temperature = 0,
+            max_tokens = 32768,
+          },
+        },
+        ["OR-deepseek-r1:free"] = {
+          __inherited_from = "openai",
+          endpoint = "https://openrouter.ai/api/v1",
+          api_key_name = "cmd:bw get notes openrouter-api-key",
+          model = "deepseek/deepseek-r1-0528:free",
+
+          disable_tools = true,
+          extra_request_body = {
+            max_tokens = 32768,
+          },
+          timeout = 30000, -- timeout in milliseconds
+        },
+        ["OR-deepseek-r1"] = {
+          __inherited_from = "openai",
+          endpoint = "https://openrouter.ai/api/v1",
+          api_key_name = "cmd:bw get notes openrouter-api-key",
+          model = model_name_deepseek_r1,
+          extra_request_body = {
+            temperature = 0.6,
+            max_tokens = 32768,
+          },
+
+          disable_tools = false,
+          timeout = 30000, -- timeout in milliseconds
+        },
+        ["OR-deepseek-v3"] = {
+          __inherited_from = "openai",
+          endpoint = "https://openrouter.ai/api/v1",
+          api_key_name = "cmd:bw get notes openrouter-api-key",
+          model = model_name_deepseek_v3,
+
+          extra_request_body = {
+            max_tokens = 32768,
+            temperature = 0,
+          },
+          disable_tools = false,
+          timeout = 30000, -- timeout in milliseconds
+        },
+        ["OR-claude"] = {
+          __inherited_from = "openai",
+          endpoint = "https://openrouter.ai/api/v1",
+          api_key_name = "cmd:bw get notes openrouter-api-key",
+          model = "anthropic/claude-3.7-sonnet:thinking",
+
+          disable_tools = true,
+          extra_request_body = {
+            max_tokens = 32768,
+          },
+          timeout = 30000, -- timeout in milliseconds
+        },
+      },
+      ---Specify the behaviour of avante.nvim
+      ---1. auto_focus_sidebar              : Whether to automatically focus the sidebar when opening avante.nvim. Default to true.
+      ---2. auto_suggestions = false, -- Whether to enable auto suggestions. Default to false.
+      ---3. auto_apply_diff_after_generation: Whether to automatically apply diff after LLM response.
+      ---                                     This would simulate similar behaviour to cursor. Default to false.
+      ---4. auto_set_keymaps                : Whether to automatically set the keymap for the current line. Default to true.
+      ---                                     Note that avante will safely set these keymap. See https://github.com/yetone/avante.nvim/wiki#keymaps-and-api-i-guess for more details.
+      ---5. auto_set_highlight_group        : Whether to automatically set the highlight group for the current line. Default to true.
+      ---6. jump_result_buffer_on_finish = false, -- Whether to automatically jump to the result buffer after generation
+      ---7. support_paste_from_clipboard    : Whether to support pasting image from clipboard. This will be determined automatically based whether img-clip is available or not.
+      ---8. minimize_diff                   : Whether to remove unchanged lines when applying a code block
+      ---9. enable_token_counting           : Whether to enable token counting. Default to true.
+      behaviour = {
+        enable_cursor_planning_mode = true,
+        auto_suggestions = false,
+        auto_suggestions_respect_ignore = false, -- ignoreing files
+      },
+      suggestion = {
+        debounce = 600,
+        throttle = 600,
+      },
+      system_prompt = function()
+        local hub = require("mcphub").get_hub_instance()
+        local prompt = hub:get_active_servers_prompt()
+        -- vim.notify("Avante: " .. vim.inspect(prompt), vim.log.levels.INFO)
+        return prompt
+      end,
+      -- The custom_tools type supports both a list and a function that returns a list. Using a function here prevents requiring mcphub before it's loaded
+      custom_tools = function()
+        return {
+          require("mcphub.extensions.avante").mcp_tool(),
+        }
+      end,
+    },
+    build = "make",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      "echasnovski/mini.pick",
+      "nvim-telescope/telescope.nvim",
+      "hrsh7th/nvim-cmp",
+      "ibhagwan/fzf-lua",
+      "nvim-tree/nvim-web-devicons",
+      -- "zbirenbaum/copilot.lua", -- NOTE: 2025-06-06 copilot issue
+      "ravitemer/mcphub.nvim", -- Add MCP Hub as a dependency
+      {
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            use_absolute_path = true,
+          },
+        },
+      },
+      {
+        "MeanderingProgrammer/render-markdown.nvim",
+        opts = {
+          file_types = { "markdown", "Avante" },
+        },
+        ft = { "markdown", "Avante" },
+      },
+    },
+  },
+  {
+    "milanglacier/minuet-ai.nvim",
+    enabled = true,
+    event = "BufReadPre",
+    opts = {
+      provider = "openai_compatible",
+      -- request_timeout = 2.5,
+      -- request_timeout = 8,
+      request_timeout = 16,
+      -- ========== debounce and throttle
+      -- throttle: Minimum ms between requests
+      -- - 1500: slow
+      -- - 1000: trying
+      -- debounce: Ms to wait after typing stops
+      -- - 600: slow
+      throttle = 1000, -- Increase to reduce costs and avoid rate limits
+      debounce = 200, -- Increase to reduce costs and avoid rate limits
+      notify = "warn",
+      provider_options = {
+        openai_compatible = {
+          -- NOTE: https://github.com/milanglacier/minuet-ai.nvim/blob/main/prompt.md#a-practical-example
+          -- system = {
+          --   prompt = gemini_prompt,
+          -- },
+          -- few_shots = gemini_few_shots,
+          -- chat_input = {
+          --   template = gemini_chat_input_template,
+          -- },
+          api_key = "OPENROUTER_API_KEY",
+          end_point = "https://openrouter.ai/api/v1/chat/completions",
+          model = model_name_completion,
+          name = "Openrouter",
+          optional = {
+            max_tokens = 56,
+            top_p = 0.9,
+            temperature = 0.0,
+            provider = {
+              -- Prioritize throughput for faster completion
+              sort = "throughput",
+            },
+          },
+        },
+      },
+    },
+    -- Recommended to avoid unnecessary request
+    completion = { trigger = { prefetch_on_insert = false } },
+  },
+  {
+    "saghen/blink.cmp",
+    optional = true,
+    opts = {
+      sources = {
+        -- if you want to use auto-complete
+        default = { "minuet" },
+        providers = {
+          minuet = {
+            name = "minuet",
+            module = "minuet.blink",
+            -- score_offset = 100,
+            async = true,
+            score_offset = 50,
+            -- timeout_ms = 8000, -- Should match minuet.config.request_timeout * 1000
+            timeout_ms = 16000, -- Should match minuet.config.request_timeout * 1000
+          },
+        },
+      },
+    },
+  },
+  -- add icons for blink
+  {
+    "saghen/blink.cmp",
+    opts = function(_, opts)
+      local ai_kind_icons = {
+        -- LLM Provider icons
+        claude = "󰋦",
+        openai = "󱢆",
+        codestral = "󱎥",
+        gemini = "",
+        Groq = "",
+        Openrouter = "󱂇",
+        Ollama = "󰳆",
+        ["Llama.cpp"] = "󰳆",
+        Deepseek = "",
+        -- FALLBACK
+        fallback = "",
+      }
+      -- local ai_source_icons = {
+      --   minuet = '󱗻',
+      -- }
+      opts.appearance = opts.appearance or {}
+      opts.appearance.kind_icons = vim.tbl_extend("force", opts.appearance.kind_icons or {}, ai_kind_icons)
+    end,
+  },
+}
