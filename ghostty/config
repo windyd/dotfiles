@@ -1,5 +1,5 @@
 theme = /Applications/Ghostty.app/Contents/Resources/ghostty/themes/tokyonight
-background-opacity = 0.3
+background-opacity = 0.8
 background-blur = true
 
 # left padding to 2 and the right padding to 4

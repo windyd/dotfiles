@@ -2,16 +2,15 @@ local model_name_deepseek_v3 = "deepseek/deepseek-chat-v3-0324:free"
 local model_name_deepseek_r1 = "deepseek/deepseek-r1-0528"
 -- local model_name_gemini_flash = "google/gemini-2.5-flash-preview"
 local model_name_gemini_flash = "google/gemini-2.5-flash"
+local model_name_gemini_flash_lite = "google/gemini-2.5-flash-lite"
 local model_name_gemini_pro = "google/gemini-2.5-pro"
 -- local model_name_gemini_flash = "google/gemini-2.0-flash-exp:free"
-local model_name_qwen3 = "qwen/qwen3-235b-a22b:free"
+local model_name_qwen3 = "qwen/qwen3-coder"
 local model_name_gemma3 = "google/gemma-3-27b-it:free"
 local model_name_claude_sonnet = "anthropic/claude-sonnet-4"
 
 -- local model_name_completion = "mistralai/devstral-small:free"
 local model_name_completion = "deepseek/deepseek-chat-v3-0324:free"
-local model_name_kimi = "moonshotai/kimi-k2"
--- local model_name_qwen3 = "qwen/qwen3-235b-a22b"
 
 -- ======= WIP: Custom Prompts For minuet-ai =======
 -- local gemini_prompt = [[
@@ -117,7 +116,21 @@ return {
           timeout = 30000, -- timeout in milliseconds
           extra_request_body = {
             temperature = 0,
-            max_tokens = 32768,
+            -- max_tokens = 1048576,
+            max_tokens = 524288,
+          },
+        },
+        ["OR-gemini-lite"] = {
+          __inherited_from = "openai",
+          endpoint = "https://openrouter.ai/api/v1",
+          api_key_name = "cmd:bw get notes openrouter-api-key",
+          model = model_name_gemini_flash_lite,
+          disable_tools = false,
+          timeout = 30000, -- timeout in milliseconds
+          extra_request_body = {
+            temperature = 0,
+            -- max_tokens = 1048576,
+            max_tokens = 524288,
           },
         },
         ["OR-claude-sonnet"] = {
@@ -182,29 +195,21 @@ return {
           },
           timeout = 30000, -- timeout in milliseconds
         },
-        ["OR-kimi"] = {
-          __inherited_from = "openai",
-          endpoint = "https://openrouter.ai/api/v1",
-          api_key_name = "cmd:bw get notes openrouter-api-key",
-          model = model_name_kimi,
-
-          extra_request_body = {
-            max_tokens = 122880, -- 120k
-            temperature = 0.6,
-          },
-          disable_tools = false,
-          timeout = 30000, -- timeout in milliseconds
-        },
-        ["OR-kimi-free"] = {
+        ["OR-qwen3-coder"] = {
           -- moonshotai/kimi-k2:free
           __inherited_from = "openai",
           endpoint = "https://openrouter.ai/api/v1",
           api_key_name = "cmd:bw get notes openrouter-api-key",
-          model = "moonshotai/kimi-k2:free",
+          model = model_name_qwen3,
 
           extra_request_body = {
-            max_tokens = 65536,
-            temperature = 0.6,
+            -- https://huggingface.co/Qwen/Qwen3-Coder-480B-A35B-Instruct
+            -- max_tokens = 262144,
+            max_tokens = 131072,
+            temperature = 0.7,
+            top_p = 0.8,
+            top_k = 20,
+            repetition_penalty = 1.05,
           },
           disable_tools = false,
           timeout = 30000, -- timeout in milliseconds
