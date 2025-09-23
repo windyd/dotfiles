@@ -228,6 +228,20 @@ return {
           disable_tools = false,
           timeout = 30000, -- timeout in milliseconds
         },
+        ["grok-code"] = {
+          -- https://platform.moonshot.cn/docs/guide/agent-support#%E9%AA%8C%E8%AF%81%E5%AE%89%E8%A3%85-1
+          __inherited_from = "openai",
+          endpoint = "https://openrouter.ai/api/v1",
+          api_key_name = "cmd:bw get notes openrouter-api-key",
+          model = "x-ai/grok-code-fast-1",
+
+          extra_request_body = {
+            max_tokens = 128000,
+            temperature = 0.2,
+          },
+          disable_tools = false,
+          timeout = 30000, -- timeout in milliseconds
+        },
       },
       ---Specify the behaviour of avante.nvim
       ---1. auto_focus_sidebar              : Whether to automatically focus the sidebar when opening avante.nvim. Default to true.
