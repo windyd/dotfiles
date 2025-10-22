@@ -17,6 +17,7 @@ font-size = 17
 
 # cursor
 cursor-color = #47FF9C
+# cursor-color = #26b0ff
 cursor-style = underline
 # cursor-style = bar
 shell-integration-features = no-cursor
@@ -39,3 +40,12 @@ keybind = global:cmd+`=toggle_quick_terminal
 # 1.2.0+
 quick-terminal-size = 25%
 quick-terminal-position = right
+
+# ====== custom shader (cursor) ======
+# from the repo https://github.com/KroneCorylus/ghostty-shader-playground
+custom-shader = ./shaders/cursor_smear.glsl
+custom-shader = ./shaders/cursor_blaze_no_trail.glsl
+# custom-shader = ./shaders/cursor_blaze_tapered.glsl
+
+# custom-shader = ./shaders/cursor_frozen.glsl
+
