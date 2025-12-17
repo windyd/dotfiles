@@ -11,6 +11,7 @@ return {
   },
   opts = {
     -- configuration goes here
+    lang = "python3",
     cn = { -- leetcode.cn
       enabled = true, ---@type boolean
       translator = false, ---@type boolean
