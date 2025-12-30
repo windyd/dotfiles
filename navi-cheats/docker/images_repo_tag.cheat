@@ -1,0 +1,4 @@
+% docker, list
+
+# list docker images with {{.Repository}}:{{.Tag}}
+docker images --format '{{.Repository}}:{{.Tag}}'

@@ -1,0 +1,6 @@
+% jq
+
+# Add row numbers to jsonl files
+jq -s '.[:2] | to_entries | map( ( .value | {__key__} ) + {rn: .key}) ' <some_jsonl_file>
+
+$ some_jsonl_file: find ./ -type f -name '*.jsonl*'

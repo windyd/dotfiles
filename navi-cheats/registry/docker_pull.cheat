@@ -1,0 +1,7 @@
+% registry, docker
+
+# docker pull with specified registry
+ENDPOINT_PREFIX="<ENDPOINT_PREFIX>"; sudo docker pull ${ENDPOINT_PREFIX}/<NAME_OF_IMAGE>; sudo docker tag ${ENDPOINT_PREFIX}/<NAME_OF_IMAGE> <NAME_OF_IMAGE>
+
+$ ENDPOINT_PREFIX: echo "m.daocloud.io/docker.io docker.1ms.run dhub.kubesre.xyz gcr.kubesre.xyz ghcr.kubesre.xyz" | tr ' ' '\n'
+$ NAME_OF_IMAGE

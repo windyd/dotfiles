@@ -1,0 +1,4 @@
+% date
+
+# ymd format: 2025-12-10
+date +%F

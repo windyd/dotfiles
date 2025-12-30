@@ -1,0 +1,4 @@
+% sql, duckdb
+
+# Describe a Column
+colname="t_rerank"; fname=runs/mIndicator-reranker-Ascend/res.jsonl; duckdb -c "SELECT COUNT(${colname}) AS count, AVG(${colname}) AS mean, STDDEV_SAMP(${colname}) AS std, MIN(${colname}) AS min, APPROX_QUANTILE(${colname}, 0.25) AS '25%', APPROX_QUANTILE(${colname}, 0.5) AS '50%', APPROX_QUANTILE(${colname}, 0.75) AS '75%', APPROX_QUANTILE(${colname}, [0.90, 0.95, 0.99]) AS more_quants, MAX(${colname}) AS max FROM '${fname}'"

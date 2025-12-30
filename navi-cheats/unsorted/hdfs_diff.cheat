@@ -1,0 +1,4 @@
+% hdfs, diff
+
+# Diffing local file and remote
+diff ipip_handling.py <(hdfs dfs -cat hdfs:///user/cac/KCtmp/LAB-12/src/ipip_handling.py)
