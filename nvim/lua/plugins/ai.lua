@@ -1,5 +1,5 @@
-local model_name_deepseek_v3 = "deepseek/deepseek-chat-v3-0324:free"
-local model_name_deepseek_r1 = "deepseek/deepseek-r1-0528"
+local model_name_deepseek_nothink = "deepseek/deepseek-v3.2-exp"
+local model_name_deepseek_think = "deepseek/deepseek-v3.2-exp"
 -- local model_name_gemini_flash = "google/gemini-2.5-flash-preview"
 local model_name_gemini_flash = "google/gemini-2.5-flash"
 local model_name_gemini_flash_lite = "google/gemini-2.5-flash-lite"
@@ -8,6 +8,7 @@ local model_name_gemini_pro = "google/gemini-2.5-pro"
 local model_name_qwen3 = "qwen/qwen3-coder"
 local model_name_gemma3 = "google/gemma-3-27b-it:free"
 local model_name_claude_sonnet = "anthropic/claude-sonnet-4"
+local model_name_kimi = "moonshotai/kimi-k2-thinking"
 
 -- local model_name_completion = "mistralai/devstral-small:free"
 local model_name_completion = "deepseek/deepseek-chat-v3-0324:free"
@@ -56,7 +57,7 @@ return {
       -- WARNING: Since auto-suggestions are a high-frequency operation and therefore expensive,
       -- currently designating it as `copilot` provider is dangerous because: https://github.com/yetone/avante.nvim/issues/1048
       -- Of course, you can reduce the request frequency by increasing `suggestion.debounce`.
-      auto_suggestions_provider = "OR-deepseek-v3",
+      auto_suggestions_provider = "grok-code",
       input = {
         provider = "snacks", -- "native" | "dressing" | "snacks"
         provider_opts = {
@@ -157,11 +158,11 @@ return {
           },
           timeout = 30000, -- timeout in milliseconds
         },
-        ["OR-deepseek-r1"] = {
+        ["OR-deepseek-think"] = {
           __inherited_from = "openai",
           endpoint = "https://openrouter.ai/api/v1",
           api_key_name = "cmd:bw get notes openrouter-api-key",
-          model = model_name_deepseek_r1,
+          model = model_name_deepseek_think,
           extra_request_body = {
             temperature = 0.6,
             max_tokens = 32768,
@@ -170,11 +171,11 @@ return {
           disable_tools = false,
           timeout = 30000, -- timeout in milliseconds
         },
-        ["OR-deepseek-v3"] = {
+        ["OR-deepseek-nothink"] = {
           __inherited_from = "openai",
           endpoint = "https://openrouter.ai/api/v1",
           api_key_name = "cmd:bw get notes openrouter-api-key",
-          model = model_name_deepseek_v3,
+          model = model_name_deepseek_nothink,
 
           extra_request_body = {
             max_tokens = 32768,
@@ -214,20 +215,39 @@ return {
           disable_tools = false,
           timeout = 30000, -- timeout in milliseconds
         },
-        ["MoonShot-kimi"] = {
-          -- https://platform.moonshot.cn/docs/guide/agent-support#%E9%AA%8C%E8%AF%81%E5%AE%89%E8%A3%85-1
+        ["OR-kimi"] = {
+          -- moonshotai/kimi-k2:free
           __inherited_from = "openai",
-          endpoint = "https://api.moonshot.cn/v1",
-          api_key_name = "cmd:bw get notes moonshot-api",
-          model = "kimi-k2-0711-preview",
+          endpoint = "https://openrouter.ai/api/v1",
+          api_key_name = "cmd:bw get notes openrouter-api-key",
+          model = model_name_kimi,
 
           extra_request_body = {
-            max_tokens = 128000,
-            temperature = 0.6,
+            -- https://huggingface.co/Qwen/Qwen3-Coder-480B-A35B-Instruct
+            -- max_tokens = 262144,
+            max_tokens = 131072,
+            temperature = 0.7,
+            top_p = 0.8,
+            top_k = 20,
+            repetition_penalty = 1.05,
           },
           disable_tools = false,
           timeout = 30000, -- timeout in milliseconds
         },
+        -- ["MoonShot-kimi"] = {
+        --   -- https://platform.moonshot.cn/docs/guide/agent-support#%E9%AA%8C%E8%AF%81%E5%AE%89%E8%A3%85-1
+        --   __inherited_from = "openai",
+        --   endpoint = "https://api.moonshot.cn/v1",
+        --   api_key_name = "cmd:bw get notes moonshot-api",
+        --   model = "kimi-k2-0711-preview",
+        --
+        --   extra_request_body = {
+        --     max_tokens = 128000,
+        --     temperature = 0.6,
+        --   },
+        --   disable_tools = false,
+        --   timeout = 30000, -- timeout in milliseconds
+        -- },
         ["grok-code"] = {
           -- https://platform.moonshot.cn/docs/guide/agent-support#%E9%AA%8C%E8%AF%81%E5%AE%89%E8%A3%85-1
           __inherited_from = "openai",
@@ -303,6 +323,10 @@ return {
             },
             use_absolute_path = true,
           },
+        },
+        keys = {
+          -- suggested keymap
+          { "<leader>p", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
         },
       },
       {
