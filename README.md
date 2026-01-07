@@ -20,7 +20,7 @@ Example:
 
 2. Stow all packages:
    ```bash
-   stow aerospace ghostty navi navi-cheats nvim opencode zellij
+   stow aerospace ghostty navi navi-cheats nvim opencode zellij scripts
    ```
    Or stow a specific package:
    ```bash
@@ -37,6 +37,7 @@ Example:
 | `navi-cheats` | `~/.local/share/navi/cheats/` |
 | `nvim` | `~/.config/nvim/` |
 | `opencode` | `~/.config/opencode/` |
+| `scripts` | `~/.scripts/` |
 | `zellij` | `~/.config/zellij/` |
 
 ## Maintenance
