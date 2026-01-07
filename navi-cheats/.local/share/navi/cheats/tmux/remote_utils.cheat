@@ -1,0 +1,9 @@
+% tmux, remote, sendkey
+
+# Send key to pane
+while true; do tmux send-keys -t <SESSION_ID>:<WINDOW_ID>.<PANE_ID> <COMMAND>; sleep 60; done
+
+$ SESSION_ID:
+$ WINDOW_ID:
+$ PANE_ID:
+$ COMMAND: echo "ls ENTER;':pwd' ENTER" | tr ';' '\n'
