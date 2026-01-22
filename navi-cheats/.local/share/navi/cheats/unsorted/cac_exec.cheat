@@ -1,4 +1,6 @@
 % cac, ssh
 
 # Exec same command with ssh to specified cac nodes.
-cmd_all="ls /home"; for i in {14..16}; do echo ------ node$i -----; ssh -p31888 node$i "${cmd_all}" ; done
+cmd_all="<cmd_all>"; for i in {14..16}; do echo ------ node$i -----; ssh -p31888 node$i "${cmd_all}" ; done
+
+$ cmd_all: # commands to run

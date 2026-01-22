@@ -1,0 +1,9 @@
+% prompt, ai, ocr
+
+
+# ai ocr prompt
+echo '请把我提供的图片内容转写为 Obsidian 可用的 Markdown，并严格遵守以下格式要求：
+1) 严格遵守图片中的排版，图片中的章节/标题（如“##”“###”），以及 numbered list（1. 2. 3. …）需要一一对应 markdown 中的语法。
+2) 最终输出必须整体用一个 Markdown code block 包裹（```markdown ... ```），需要选择足够数量的 backtick 确保内容包含代码块的情况下依然能被整体的 markdown 代码块包裹。
+3) 所有数学公式必须用 $$ ... $$（或 $$$$ ... $$$$）包裹为展示公式；不要用单个 $...$ 作为行内公式。
+只输出符合要求的 Markdown code block，不要输出额外解释。' | pbcopy

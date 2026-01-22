@@ -4,3 +4,11 @@
 jq -s '.[:2] | to_entries | map( ( .value | {__key__} ) + {rn: .key}) ' <some_jsonl_file>
 
 $ some_jsonl_file: find ./ -type f -name '*.jsonl*'
+
+
+% jq, recursive
+
+# [YANK ONLY] Recursively retrieve the target object given some key to filter objects
+jq '.. | objects | select(.<filter_key>) | .'
+
+$ filter_key: 
