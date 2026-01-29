@@ -51,6 +51,7 @@ quick-terminal-position = right
 
 
 custom-shader = ./shaders/cursor_frozen.glsl
+macos-option-as-alt = true
 # ===================================
 # Vim-mode keybindings for Ghostty.
 #
