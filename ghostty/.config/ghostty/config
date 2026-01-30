@@ -1,3 +1,4 @@
+# ====== appearance ======
 theme = /Applications/Ghostty.app/Contents/Resources/ghostty/themes/tokyonight
 background-opacity = 0.6
 background-blur = true
@@ -52,6 +53,9 @@ quick-terminal-position = right
 
 custom-shader = ./shaders/cursor_frozen.glsl
 macos-option-as-alt = true
+
+# ====== OSC52 ======
+clipboard-write = allow
 # ===================================
 # Vim-mode keybindings for Ghostty.
 #
