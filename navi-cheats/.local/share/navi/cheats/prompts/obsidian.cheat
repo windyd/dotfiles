@@ -6,7 +6,7 @@ echo 'Given the metadata from sources, summarize the paper info into the yaml fr
 
 - author: `list[str]`
 - keywords: `list[str]`
-- PublishedDate: `str`, in DD-MM-YYYY format and wrapped with explicit `""`
+- PublishedDate: `str`, in DD-MM-YY format and wrapped with explicit `""`
 - url: `str`, link to the arxiv abstract page
 
 Output should be wrapped with a markdown codeblock
@@ -22,8 +22,13 @@ author:
 keywords:
   - Machine Learning
   - Collaborative Filtering
-PublishedDate: "[[20-09-1999]]"
+PublishedDate: "[[20-09-19]]"
 url: http://127.0.0.1/fake-address
 ---
 ```
 ' | pbcopy
+
+% prompt, ai, partial-doc
+
+# Generate a HOW TO partial document
+echo 'generate a short HOW TO partial document (heading level 2)' | pbcopy
