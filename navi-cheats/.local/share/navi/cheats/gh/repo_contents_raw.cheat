@@ -1,0 +1,18 @@
+% gh, api, contents, raw
+
+# Get raw file content from a GitHub repo path
+gh api repos/<OWNER-REPO>/contents/<FILE_PATH> -H "Accept: application/vnd.github.raw"
+
+$ OWNER-REPO
+$ FILE_PATH
+
+
+% gh, api, contents, raw, ref
+
+# Get raw file content at a specific ref (branch/tag/sha)
+gh api "repos/<OWNER-REPO>/contents/<FILE_PATH>?ref=<REF>" -H "Accept: application/vnd.github.raw"
+
+$ OWNER
+$ REPO
+$ FILE_PATH
+$ REF
