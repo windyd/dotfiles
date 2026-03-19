@@ -1,0 +1,59 @@
+% bw, bitwarden, items, list
+
+# List all item names
+bw list items | jq 'map(.name)'
+
+% bw, bitwarden, session, unlock, raw
+
+# Unlock and export a new BW_SESSION
+export BW_SESSION=$(bw unlock --raw)
+
+
+% bw, bitwarden, password, get
+
+# Get password by keyword or full item name
+bw get password "<ITEM_KEYWORD_OR_FULL_NAME>"
+
+$ ITEM_KEYWORD_OR_FULL_NAME: bw list items | jq -r '.[].name'
+
+
+% bw, bitwarden, login, create, random, preview
+
+# Preview login item JSON with generated password
+bw get template item | jq --arg name "<ITEM_NAME>" --arg notes "<NOTES>" --arg user "<USERNAME>" --arg pass "$(bw generate -ulns --length <PASS_LENGTH>)" --argjson login "$(bw get template item.login)" '.name=$name | .notes=$notes | .login=$login | .login.username=$user | .login.password=$pass'
+
+$ PASS_LENGTH: echo "8 10 15 20 24 32" | tr ' ' '\n'
+
+
+% bw, bitwarden, login, create, random, apply
+
+# Create login item with generated password
+bw get template item | jq --arg name "<ITEM_NAME>" --arg notes "<NOTES>" --arg user "<USERNAME>" --arg pass "$(bw generate -ulns --length <PASS_LENGTH>)" --argjson login "$(bw get template item.login)" '.name=$name | .notes=$notes | .login=$login | .login.username=$user | .login.password=$pass' | bw encode | bw create item
+
+$ PASS_LENGTH: echo "8 10 15 20 24 32" | tr ' ' '\n'
+
+
+% bw, bitwarden, secure-note, create, clipboard, preview
+
+# Preview secure note (for tokens and stuff) from clipboard
+secret=$(pbpaste); bw get template item | jq --arg name "<NOTE_NAME>" --arg secret "$secret" '.type = 2 | .secureNote.type = 0 | .notes = $secret | .name = $name'
+
+% bw, bitwarden, secure-note, create, clipboard, apply
+
+# Create secure note (for tokens and stuff) with GIVEN SECRET from clipboard
+secret=$(pbpaste); bw get template item | jq --arg name "<NOTE_NAME>" --arg secret "$secret" '.type = 2 | .secureNote.type = 0 | .notes = $secret | .name = $name' | bw encode | bw create item
+
+% bw, bitwarden, secure-note, create, generated, preview
+
+# Preview secure note with BW GENERATED SECRET
+secret=$(bw generate -ulns --length <SECRET_LENGTH>); bw get template item | jq --arg name "<NOTE_NAME>" --arg secret "$secret" '.type = 2 | .secureNote.type = 0 | .notes = $secret | .name = $name'
+
+$ SECRET_LENGTH: echo "10 16 20" | tr ' ' '\n'
+
+
+% bw, bitwarden, secure-note, create, generated, apply
+
+# Create secure note with BW GENERATED SECRET
+secret=$(bw generate -ulns --length <SECRET_LENGTH>); bw get template item | jq --arg name "<NOTE_NAME>" --arg secret "$secret" '.type = 2 | .secureNote.type = 0 | .notes = $secret | .name = $name' | bw encode | bw create item
+
+$ SECRET_LENGTH: echo "10 16 20" | tr ' ' '\n'

@@ -9,4 +9,4 @@ $ TRACE_ID: grep -F 'ERROR [' ~/Library/Logs/Homebrew/sing-box/box.log | tail -1
 grep -F '[<TRACE_ID> ' ~/Library/Logs/Homebrew/sing-box/box.log
 
 $ KEY_WORD:
-=31337;OK$ TRACE_ID: grep -F '<KEY_WORD>' ~/Library/Logs/Homebrew/sing-box/box.log | tail -100 --- --map "awk -F'\[' '/\[[0-9]+/{print $2}' | cut -d' ' -f1"
+$ TRACE_ID: grep -F '<KEY_WORD>' ~/Library/Logs/Homebrew/sing-box/box.log | tail -100 --- --map "awk -F'\[' '/\[[0-9]+/{print $2}' | cut -d' ' -f1"
