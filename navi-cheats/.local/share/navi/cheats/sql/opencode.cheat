@@ -1,0 +1,10 @@
+% sql, opencode, message, session
+
+# Query opencode messages for a session id
+OC_SESS_ID="<OC_SESS_ID>"; opencode db "SELECT * FROM message WHERE session_id = '${OC_SESS_ID}' ORDER BY time_created DESC, id DESC"
+
+
+% sql, opencode, part, tool
+
+# Query recent tool parts for a session as JSON
+OC_SESS_ID="<OC_SESS_ID>"; opencode db --format json "SELECT p.data FROM part p WHERE p.session_id = '${OC_SESS_ID}' AND p.data LIKE '%\"type\":\"tool\"%' ORDER BY p.time_created DESC LIMIT 10"

@@ -1,0 +1,13 @@
+% prompt, ai, opencode, skill
+
+# experiment on skill updates with subagent
+echo "do an experiment:
+
+send a subagent to perform <what_to_perform> (don't give him our preference, let him just load the skill). ask him to report his command sequence. let's see
+
+1. if he succeed to run the job
+2. if he follow our preference.
+
+let's test the clearness of the SKILL documentation." | pbcopy
+
+$ what_to_perform: 

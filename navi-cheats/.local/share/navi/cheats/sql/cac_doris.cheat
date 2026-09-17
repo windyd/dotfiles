@@ -1,0 +1,15 @@
+% sql, cac, doris
+
+# Select from table
+mysql --login-path=doris -Ee 'select sender, subject, tag from <table> where ymd = "<today_ymd>" limit 5'
+
+$ today_ymd: date +%Y-%m-%d
+$ table: echo "paimon_cac.ods_cac.ods_cac_trans paimon_cac_hms.dwd_mail.mail_event_core_prototype paimon_cac_hms.archive_mail.mail_payload_prototype" | tr ' ' '\n'
+
+
+% sql, cac, doris
+# Count today
+mysql --login-path=doris -Ee 'select count(*) from <table> where ymd = "<today_ymd>"'
+
+$ today_ymd: date +%Y-%m-%d
+$ table: echo "paimon_cac.ods_cac.ods_cac_trans paimon_cac_hms.dwd_mail.mail_event_core_prototype paimon_cac_hms.archive_mail.mail_payload_prototype" | tr ' ' '\n'

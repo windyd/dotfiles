@@ -1,0 +1,7 @@
+% edge, remote-debugging, browser
+
+# Restart Microsoft Edge with remote debugging and a selectable profile dir
+pkill -f "Microsoft Edge"
+open -na "Microsoft Edge" --args --remote-debugging-port=9222 --remote-debugging-address=127.0.0.1 --user-data-dir="<USER_DATA_DIR>" --no-first-run --no-default-browser-check --disable-extensions --new-window "https://example.com"
+
+$ USER_DATA_DIR: for d in "$HOME"/.local/state/mail-sec-rec/*; do [ -d "$d" ] && printf '%s\n' "$d"; done

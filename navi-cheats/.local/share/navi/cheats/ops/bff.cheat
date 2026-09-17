@@ -1,0 +1,20 @@
+% ops, bff, env, pid
+
+# Print an environment variable from a Linux process environment
+python3 - <<'PY'
+from pathlib import Path
+
+pid = "<PID>"
+env_key = "<ENV_KEY>"
+env = Path(f"/proc/{pid}/environ").read_bytes().split(b"\0")
+
+for item in env:
+    if item.startswith(f"{env_key}=".encode()):
+        print(item.decode())
+        break
+else:
+    print(f"{env_key}=<not set>")
+PY
+
+$ PID:
+$ ENV_KEY:
