@@ -45,6 +45,40 @@ local model_name_completion = "deepseek/deepseek-chat-v3-0324:free"
 
 return {
   {
+    "nickjvandyke/opencode.nvim",
+    version = "*", -- Latest stable release
+    config = function()
+      ---@type opencode.Opts
+      vim.g.opencode_opts = {
+        -- Your configuration, if any; goto definition on the type for details
+      }
+
+      vim.o.autoread = true -- Required for `vim.g.opencode_opts.events.reload`
+
+      -- Recommended/example keymaps
+      vim.keymap.set({ "n", "x" }, "<leader>oa", function()
+        require("opencode").ask("@this: ")
+      end, { desc = "Ask OpenCode…" })
+      vim.keymap.set({ "n", "x" }, "<leader>os", function()
+        require("opencode").select()
+      end, { desc = "Select OpenCode…" })
+
+      vim.keymap.set({ "n", "x" }, "go", function()
+        return require("opencode").operator("@this ")
+      end, { desc = "Append range to OpenCode", expr = true })
+      vim.keymap.set("n", "goo", function()
+        return require("opencode").operator("@this ") .. "_"
+      end, { desc = "Append line to OpenCode", expr = true })
+
+      vim.keymap.set("n", "<S-C-u>", function()
+        require("opencode").command("session.half.page.up")
+      end, { desc = "Scroll OpenCode up" })
+      vim.keymap.set("n", "<S-C-d>", function()
+        require("opencode").command("session.half.page.down")
+      end, { desc = "Scroll OpenCode down" })
+    end,
+  },
+  {
     "zbirenbaum/copilot.lua",
     enabled = false,
   },
@@ -52,6 +86,7 @@ return {
     "yetone/avante.nvim",
     event = "VeryLazy",
     version = false,
+    enabled = false,
     opts = {
       provider = "OR-gemini",
       -- WARNING: Since auto-suggestions are a high-frequency operation and therefore expensive,
@@ -340,7 +375,7 @@ return {
   },
   {
     "milanglacier/minuet-ai.nvim",
-    enabled = true,
+    enabled = false,
     event = "BufReadPre",
     opts = {
       -- Enable or disable auto-completion. Note that you still need to add
@@ -397,6 +432,7 @@ return {
     -- Recommended to avoid unnecessary request
     completion = { trigger = { prefetch_on_insert = false } },
   },
+  --[[
   {
     "saghen/blink.cmp",
     optional = true,
@@ -427,7 +463,9 @@ return {
       },
     },
   },
+  --]]
   -- add icons for blink
+  --[[
   {
     "saghen/blink.cmp",
     opts = function(_, opts)
@@ -452,4 +490,5 @@ return {
       opts.appearance.kind_icons = vim.tbl_extend("force", opts.appearance.kind_icons or {}, ai_kind_icons)
     end,
   },
+  --]]
 }

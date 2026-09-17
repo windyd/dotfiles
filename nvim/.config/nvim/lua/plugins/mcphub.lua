@@ -1,5 +1,6 @@
 return {
   "ravitemer/mcphub.nvim",
+  enable = false,
   dependencies = {
     "nvim-lua/plenary.nvim",
     "yetone/avante.nvim",
